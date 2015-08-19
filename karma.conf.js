@@ -15,19 +15,22 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      {pattern: "spec/javascripts/fixtures/*.html", included: false, served: true},
+      'vendor/jquery/dist/jquery.js',
+      'vendor/jasmine-jquery/lib/jasmine-jquery.js',
+      'vendor/jasmine-ajax/lib/mock-ajax.js',
+      'src/js/**/*.js',
       'spec/**/*-spec.js'
     ],
 
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-    },
+    preprocessors: {},
 
 
     // test results reporter to use
@@ -61,5 +64,5 @@ module.exports = function(config) {
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: true
-  })
+  });
 }

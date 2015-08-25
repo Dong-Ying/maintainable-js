@@ -12,10 +12,8 @@ var SearchResultsView = Backbone.View.extend({
 
     likeLocation: function (e) {
         e.preventDefault();
-        //var id = $(e.currentTarget).data('id');
         var likedPlaces = this.likedPlacesModel.get('likedPlaces');
-        console.log(e.currentTarget);
-        likedPlaces.push({name: $(e.currentTarget.parent).find('h5').text()});
+        likedPlaces.push({name: $($(e.currentTarget)[0]).parent().find('h5').text()});
         this.likedPlacesModel.trigger('change:likedPlaces', likedPlaces);
     },
 

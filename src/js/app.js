@@ -4,7 +4,7 @@ $(function() {
     ];
 
     var likedPlaces = [
-        {id:0,"name": "Melbourne"}
+        {"id":0,"name": "Melbourne"}
     ];
 
     var searchResultsModel = new SearchResults({'searchResults': searchResults});

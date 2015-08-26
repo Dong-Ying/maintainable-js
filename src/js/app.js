@@ -1,10 +1,10 @@
 $(function() {
     var searchResults = [
-        {"name": "Melbourne", "description": "A great place"}
+        {'id':0, "name": "Melbourne", "description": "A great place", status: true}
     ];
 
     var likedPlaces = [
-        {"name": "Melbourne"}
+        {id:0,"name": "Melbourne"}
     ];
 
     var searchResultsModel = new SearchResults({'searchResults': searchResults});

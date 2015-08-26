@@ -59,9 +59,15 @@ ul {
   padding: 4px 0;
 }
 
-#searchResults a.like {
+#searchResults a.true {
   text-transform: uppercase;
   border-radius: 2px;
+}
+
+#searchResults a.false {
+    text-transform: uppercase;
+    border-radius: 2px;
+    background-color: grey;
 }
 
 #searchResults .panel {

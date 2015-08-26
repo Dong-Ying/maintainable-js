@@ -17,6 +17,10 @@ var SearchFormView = Backbone.View.extend({
         $.ajax({
             url: "http://location-backend-service.herokuapp.com/locations?name=" + search_word
         }).done(function (data) {
+            _.each(data,function(value,index){
+                value.id=index+1;
+                value.status= true;
+            })
             that.model.set('searchResults', data);
             that.model.trigger('change:searchResults', data);
         });

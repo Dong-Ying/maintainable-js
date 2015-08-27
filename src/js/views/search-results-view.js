@@ -18,9 +18,8 @@ module.exports = Backbone.View.extend({
 
     likeLocation: function (e) {
         e.preventDefault();
-        //var id = $(e.currentTarget).data('id');
         var likedPlaces = this.likedPlacesModel.get('likedPlaces');
-        likedPlaces.push({name: 'haha'});
+        likedPlaces.push({name: $(e.currentTarget).parent().find("h5").text()});
         this.likedPlacesModel.trigger('change:likedPlaces', likedPlaces);
     },
 

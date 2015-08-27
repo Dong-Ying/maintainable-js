@@ -8,7 +8,7 @@ $(function() {
 
     var searchFormView = new SearchFormView(searchResultsModel);
     var searchResultsView = new SearchResultsView(searchResultsModel, likedPlacesModel);
-    var likedPlacesView = new LikedPlacesView(likedPlacesModel);
+    var likedPlacesView = new LikedPlacesView(searchResultsModel,likedPlacesModel);
 
     searchResultsView.render();
     searchFormView.render();

@@ -39,7 +39,10 @@
         <nav>
             <ul>
                 <% _.each(likedPlaces, function(likedPlace) { %>
-                    <li class="like"><%= likedPlace.name %></li>
+                    <li class="like">
+                        <%= likedPlace.name %>
+                        <a href="#" class="remove tiny right" data-id="<%= likedPlace.id %>">Remove</a>
+                    </li>
                 <% }); %>
             </ul>
         </nav>

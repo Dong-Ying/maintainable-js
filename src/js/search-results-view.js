@@ -19,13 +19,12 @@ var SearchResultsView = Backbone.View.extend({
         //trigger liked places
         var likedPlaces = this.likedPlacesModel.get('likedPlaces');
         if(current.status){
+            console.log("current status is true----");
             likedPlaces.push({id: id, name: $($(e.currentTarget)[0]).parent().find('h5').text()});
         }else{
-            _.each(likedPlaces,function(value,index){
-            })
             this.likedPlacesModel.set('likedPlaces',_.filter(likedPlaces,function(element){
                 return element.id !=id
-            }))
+            }));
         }
         current.status = !current.status;
         this.searchResultsmodel.trigger('change:searchResults', searchResults);

@@ -1,3 +1,11 @@
+var $ = require('jquery');
+
+var SearchResults = require("./models/search-results-model");
+var LikedPlaces = require("./models/liked-places-model");
+var SearchFormView = require("./views/search-form-view");
+var SearchResultsView = require("./views/search-results-view");
+var LikedPlacesView = require("./views/liked-places-view");
+
 $(function() {
     var searchResults = [
         {"name": "Melbourne", "description": "A great place"}

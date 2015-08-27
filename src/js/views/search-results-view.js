@@ -1,4 +1,10 @@
-var SearchResultsView = Backbone.View.extend({
+var _ = require('lodash');
+var $ = require('jquery');
+var Backbone = require('backbone');
+
+var template = require("../templates/search-results.hbs");
+
+module.exports = Backbone.View.extend({
     initialize: function (searchResultsModel, likedPlacesModel) {
         this.searchResultsmodel = searchResultsModel;
         this.likedPlacesModel = likedPlacesModel;
@@ -14,17 +20,14 @@ var SearchResultsView = Backbone.View.extend({
         e.preventDefault();
         //var id = $(e.currentTarget).data('id');
         var likedPlaces = this.likedPlacesModel.get('likedPlaces');
-        console.log(e.currentTarget);
-        likedPlaces.push({name: $(e.currentTarget.parent).find('h5').text()});
+        likedPlaces.push({name: 'haha'});
         this.likedPlacesModel.trigger('change:likedPlaces', likedPlaces);
     },
 
     el: '#searchResults',
 
     render: function () {
-        var compiled = _.template(this.template);
-        var html = compiled(this.searchResultsmodel.toJSON());
-
+        var html = template(this.searchResultsmodel.toJSON());
         this.$el.html(html);
 
         return this.$el;

@@ -1,4 +1,10 @@
-var SearchFormView = Backbone.View.extend({
+var _ = require('lodash');
+var $ = require('jquery');
+var Backbone = require('backbone');
+
+var template = require("../templates/search-form.hbs");
+
+module.exports = Backbone.View.extend({
     initialize: function (model) {
         this.model = model;
         this.template = $('#search-form').html();
@@ -23,8 +29,7 @@ var SearchFormView = Backbone.View.extend({
     },
 
     render: function () {
-        var compiled = _.template(this.template);
-        var html = compiled();
+        var html = template();
         this.$el.html(html);
 
         return this.$el;

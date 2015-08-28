@@ -1,14 +1,17 @@
-var SearchFormView = Backbone.View.extend({
+var Backbone = require('backbone');
+var _ = require('lodash');
+var $ = require('jquery');
+
+var template = require('../template/search-form.hbs');
+
+module.exports = Backbone.View.extend({
     initialize: function (model) {
         this.model = model;
-        this.template = $('#search-form').html();
     },
 
     events: {
         'click #searchButton': 'updateSearchResults'
     },
-
-    el: '#searchForm',
 
     updateSearchResults: function (e) {
         e.preventDefault();
@@ -21,14 +24,13 @@ var SearchFormView = Backbone.View.extend({
                 value.id=index+1;
                 value.status= true;
             })
-            that.model.set('searchResults', data);
-            that.model.trigger('change:searchResults', data);
+            that.model.set('locations', data);
+            that.model.trigger('change:locations', data);
         });
     },
 
     render: function () {
-        var compiled = _.template(this.template);
-        var html = compiled();
+        var html = template();
         this.$el.html(html);
 
         return this.$el;

@@ -11,6 +11,7 @@ If you have already got `node` & `npm` installed locally, goto step 2.
 2. Install `Bower` globally
 
 		npm install -g bower
+		try
 
 3. Install `Gulp` globally
 

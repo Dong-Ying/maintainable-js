@@ -25782,9 +25782,7 @@ return jQuery;
 var $ = require('jquery');
 var Locations = require('./module/locations');
 var SearchFormView  = require('./view/search-form');
-var SearchResultsView = require('./view/search-results');
-var LikedPlacesView = require('./view/liked-places');
-
+var LocationsView = require('./view/locations');
 $(function() {
     var locations = [
         {'id':0, "name": "Melbourne", "description": "A great place", status: true}
@@ -25793,20 +25791,18 @@ $(function() {
     var model = new Locations({'locations': locations});
 
     var searchFormView = new SearchFormView(model);
-    var searchResultsView = new SearchResultsView(model);
-    var likedPlacesView = new LikedPlacesView(model);
+    var locationsView = new LocationsView(model);
 
     $('#searchForm').append(searchFormView.render());
-    $('#results').append(searchResultsView.render());
-    $('#likedPlaces').append(likedPlacesView.render());
+    $('#locations').append(locationsView.render());
 });
 
-},{"./module/locations":15,"./view/liked-places":20,"./view/search-form":21,"./view/search-results":23,"jquery":12}],15:[function(require,module,exports){
+},{"./module/locations":15,"./view/locations":20,"./view/search-form":21,"jquery":12}],15:[function(require,module,exports){
 var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({
   defaults: {
-    searchResults:[]
+    locations:[]
   }
 });
 
@@ -25881,14 +25877,15 @@ module.exports = Backbone.View.extend({
 
   removeLikedPlace: function(e){
     e.preventDefault();
-
     this.model.set('status', !this.model.get('status'));
   },
+
+  el: '#locations',
 
   render: function () {
     console.log("liked places have been rendered again");
     var html = template(this.model.toJSON());
-    this.$el.html(html);
+    this.$el.find('#likedPlaces').html(html);
 
     return this.$el;
   }
@@ -25899,34 +25896,44 @@ var Backbone = require('backbone');
 var _ = require('lodash');
 var $ = require('jquery');
 
-var LikedPlacesView = require('./liked-place');
+
+var SearchResultView = require('./search-result');
+var LikedPlaceView = require('./liked-place');
 
 module.exports = Backbone.View.extend({
-    initialize: function (module) {
-      this.views=[];
-      this.model = module;
-      this.model.bind('change:locations', _.bind(this.render, this));
-    },
+  initialize: function (model) {
+    this.views = [];
+    this.model = model;
+    this.model.bind('change:locations', _.bind(this.render, this));
+  },
 
-    createSubView: function(model) {
-        return new LikedPlacesView(new Backbone.Model(model));
-    },
+  createSubView: function(model) {
+    //every location get a subview;
+    var subView = [];
+    var subModel = new Backbone.Model(model);
+    subView.push(new SearchResultView(subModel));
+    subView.push(new LikedPlaceView(subModel));
+    return subView;
+  },
 
-    getDom: function (view) {
-        return view.render();
-    },
+  renderSubView: function (views) {
+    _.each(views,function(view){
+      view.render();
+    });
+  },
 
-    render: function() {
-        console.log("liked places have been triggered");
-        var likedPlaces = this.model.get('locations');
-        this.views = _.map(likedPlaces, _.bind(this.createSubView, this));
-        this.$el.html(_.map(this.views, _.bind(this.getDom, this)));
+  render: function () {
+    var locations = this.model.get('locations');
+    this.views = _.map(locations, _.bind(this.createSubView, this));
 
-        return this.$el;
-    }
+    console.log(this.views.length,"------------------------------");
+    _.map(this.views, _.bind(this.renderSubView, this));
+
+    return this.$el;
+  }
 });
 
-},{"./liked-place":19,"backbone":1,"jquery":12,"lodash":13}],21:[function(require,module,exports){
+},{"./liked-place":19,"./search-result":22,"backbone":1,"jquery":12,"lodash":13}],21:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('lodash');
 var $ = require('jquery');
@@ -25984,49 +25991,18 @@ module.exports = Backbone.View.extend({
     'click .status': 'toggle'
   },
 
+  el: '#locations',
+
   toggle: function (e) {
     e.preventDefault();
     this.model.set('status', !this.model.get('status'));
-    this.model.trigger('change:locations');
   },
 
   render: function() {
     var html = template(this.model.toJSON());
-    this.$el.html(html);
-
+    this.$el.find('#results').html(html);
     return this.$el;
   }
 });
 
-},{"../template/search-result.hbs":18,"backbone":1,"jquery":12,"lodash":13}],23:[function(require,module,exports){
-var Backbone = require('backbone');
-var _ = require('lodash');
-var $ = require('jquery');
-
-var SearchResultView = require('./search-result');
-
-module.exports = Backbone.View.extend({
-    initialize: function (model) {
-        this.views=[];
-        this.model = model;
-        this.model.bind('change:locations', _.bind(this.render, this));
-    },
-
-    createSubView: function(model) {
-        return new SearchResultView(new Backbone.Model(model));
-    },
-
-    getDom: function (view) {
-        return view.render();
-    },
-
-    render: function () {
-        var searchResults = this.model.get('locations');
-        this.views = _.map(searchResults, _.bind(this.createSubView, this));
-        this.$el.html(_.map(this.views, _.bind(this.getDom, this)));
-
-        return this.$el;
-    }
-});
-
-},{"./search-result":22,"backbone":1,"jquery":12,"lodash":13}]},{},[14]);
+},{"../template/search-result.hbs":18,"backbone":1,"jquery":12,"lodash":13}]},{},[14]);

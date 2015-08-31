@@ -15,6 +15,8 @@ module.exports = Backbone.View.extend({
     'click .status': 'toggle'
   },
 
+  el: '#locations',
+
   toggle: function (e) {
     e.preventDefault();
     this.model.set('status', !this.model.get('status'));
@@ -22,8 +24,7 @@ module.exports = Backbone.View.extend({
 
   render: function() {
     var html = template(this.model.toJSON());
-    this.$el.html(html);
-
+    this.$el.find('#results').html(html);
     return this.$el;
   }
 });

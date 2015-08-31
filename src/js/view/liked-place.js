@@ -15,14 +15,15 @@ module.exports = Backbone.View.extend({
 
   removeLikedPlace: function(e){
     e.preventDefault();
-
     this.model.set('status', !this.model.get('status'));
   },
+
+  el: '#locations',
 
   render: function () {
     console.log("liked places have been rendered again");
     var html = template(this.model.toJSON());
-    this.$el.html(html);
+    this.$el.find('#likedPlaces').html(html);
 
     return this.$el;
   }

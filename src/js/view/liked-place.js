@@ -21,7 +21,6 @@ module.exports = Backbone.View.extend({
   el: '#locations',
 
   render: function () {
-    console.log("liked places have been rendered again");
     var html = template(this.model.toJSON());
     this.$el.find('#likedPlaces').html(html);
 

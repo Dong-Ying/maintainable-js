@@ -25839,12 +25839,8 @@ module.exports = HandlebarsCompiler.template({"compiler":[6,">= 2.0.0-beta.1"],"
 },{"hbsfy/runtime":11}],18:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
-module.exports = HandlebarsCompiler.template({"1":function(depth0,helpers,partials,data) {
-    return "Like";
-},"3":function(depth0,helpers,partials,data) {
-    return "Unlike";
-},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1, alias1=this.lambda, alias2=this.escapeExpression;
+module.exports = HandlebarsCompiler.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var alias1=this.lambda, alias2=this.escapeExpression;
 
   return "<div class=\"panel large-12 columns\">\n        <h5>"
     + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
@@ -25854,9 +25850,7 @@ module.exports = HandlebarsCompiler.template({"1":function(depth0,helpers,partia
     + alias2(alias1((depth0 != null ? depth0.status : depth0), depth0))
     + " status button tiny right\" data-id=\""
     + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
-    + "\">\n            "
-    + ((stack1 = helpers['if'].call(depth0,(depth0 != null ? depth0.status : depth0),{"name":"if","hash":{},"fn":this.program(1, data, 0),"inverse":this.program(3, data, 0),"data":data})) != null ? stack1 : "")
-    + "\n        </a>\n</div>\n";
+    + "\">\n          LIKE\n        </a>\n</div>\n";
 },"useData":true});
 
 },{"hbsfy/runtime":11}],19:[function(require,module,exports){
@@ -25883,7 +25877,6 @@ module.exports = Backbone.View.extend({
   el: '#locations',
 
   render: function () {
-    console.log("liked places have been rendered again");
     var html = template(this.model.toJSON());
     this.$el.find('#likedPlaces').html(html);
 
@@ -25926,7 +25919,6 @@ module.exports = Backbone.View.extend({
     var locations = this.model.get('locations');
     this.views = _.map(locations, _.bind(this.createSubView, this));
 
-    console.log(this.views.length,"------------------------------");
     _.map(this.views, _.bind(this.renderSubView, this));
 
     return this.$el;
@@ -25991,16 +25983,37 @@ module.exports = Backbone.View.extend({
     'click .status': 'toggle'
   },
 
-  el: '#locations',
+  el: '#results',
 
   toggle: function (e) {
     e.preventDefault();
     this.model.set('status', !this.model.get('status'));
   },
 
+  likeButton: function(id){
+    $("[data-id='"+id+"']").text('Like');
+  },
+
+  unlikeButton: function(id){
+    $("[data-id='"+id+"']").text('unLike');
+  },
+
   render: function() {
-    var html = template(this.model.toJSON());
-    this.$el.find('#results').html(html);
+    var id = this.model.get('id');
+    var className = "result-"+id;
+    if($('.'+className).length){
+      if(this.model.get('status')){
+        this.likeButton(id);
+      }else{
+        this.unlikeButton(id);
+      }
+    }else{
+      var wrapper = $('<div></div>');
+      $(wrapper).attr("class", className);
+      var html = template(this.model.toJSON());
+      $(wrapper).html(html);
+      this.$el.append(wrapper);
+    }
     return this.$el;
   }
 });

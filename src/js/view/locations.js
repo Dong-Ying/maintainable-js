@@ -32,7 +32,6 @@ module.exports = Backbone.View.extend({
     var locations = this.model.get('locations');
     this.views = _.map(locations, _.bind(this.createSubView, this));
 
-    console.log(this.views.length,"------------------------------");
     _.map(this.views, _.bind(this.renderSubView, this));
 
     return this.$el;

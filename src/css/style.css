@@ -47,11 +47,11 @@ ul {
 
 #likedPlaces li {
     margin: 10px 0;
-    background-color: #f2f2f2;
     padding: 8px 12px;
     border-radius: 2px;
 }
 #likedPlaces .remove{
+  background-color: #f2f2f2;
   text-transform: uppercase;
   border-radius: 1px;
 }

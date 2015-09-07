@@ -18,12 +18,21 @@ module.exports = Backbone.View.extend({
     this.model.set('status', !this.model.get('status'));
   },
 
-  el: '#locations',
+  el: '#likedPlaces',
 
   render: function () {
-    var html = template(this.model.toJSON());
-    this.$el.find('#likedPlaces').html(html);
 
+    var id = this.model.get('id');
+    var className = "liked-"+id;
+    if(this.model.get('status')){
+      $('.'+className).remove();
+    }else{
+      var wrapper = $('<div></div>');
+      $(wrapper).attr("class", className);
+      var html = template(this.model.toJSON());
+      $(wrapper).html(html);
+      this.$el.append(wrapper);
+    }
     return this.$el;
   }
 });

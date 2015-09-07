@@ -15,13 +15,15 @@ module.exports = Backbone.View.extend({
 
   removeLikedPlace: function(e){
     e.preventDefault();
-    this.model.set('status', !this.model.get('status'));
+    var id = $(e.target).data('id');
+    if(this.model.get('id')==id){
+      this.model.set('status', !this.model.get('status'));
+    }
   },
 
   el: '#likedPlaces',
 
   render: function () {
-
     var id = this.model.get('id');
     var className = "liked-"+id;
     if(this.model.get('status')){

@@ -25809,24 +25809,14 @@ module.exports = Backbone.Model.extend({
 },{"backbone":1}],16:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
-module.exports = HandlebarsCompiler.template({"1":function(depth0,helpers,partials,data) {
-    return "      if\n";
-},"3":function(depth0,helpers,partials,data) {
+module.exports = HandlebarsCompiler.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var alias1=this.lambda, alias2=this.escapeExpression;
 
-  return "      hello\n      "
+  return "<li class=\"like\">\n  "
     + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
-    + "\n      "
-    + alias2(alias1((depth0 != null ? depth0.status : depth0), depth0))
-    + "\n      <a href=\"#\" class=\"remove tiny right\" data-id=\""
+    + "\n  <a href=\"#\" class=\"remove tiny right\" data-id=\""
     + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
-    + "\">Remove</a>\n";
-},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    var stack1;
-
-  return "<li class=\"like\">\n"
-    + ((stack1 = helpers['if'].call(depth0,(depth0 != null ? depth0.status : depth0),{"name":"if","hash":{},"fn":this.program(1, data, 0),"inverse":this.program(3, data, 0),"data":data})) != null ? stack1 : "")
-    + "</li>\n\n\n\n";
+    + "\">Remove</a>\n</li>\n\n\n\n";
 },"useData":true});
 
 },{"hbsfy/runtime":11}],17:[function(require,module,exports){
@@ -25846,9 +25836,7 @@ module.exports = HandlebarsCompiler.template({"compiler":[6,">= 2.0.0-beta.1"],"
     + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
     + "</h5>\n        <h6>"
     + alias2(alias1((depth0 != null ? depth0.description : depth0), depth0))
-    + "</h6>\n        <a href=\"#\" class=\""
-    + alias2(alias1((depth0 != null ? depth0.status : depth0), depth0))
-    + " status button tiny right\" data-id=\""
+    + "</h6>\n        <a href=\"#\" class=\"status button tiny right\" data-id=\""
     + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
     + "\">\n          LIKE\n        </a>\n</div>\n";
 },"useData":true});
@@ -25871,15 +25859,26 @@ module.exports = Backbone.View.extend({
 
   removeLikedPlace: function(e){
     e.preventDefault();
-    this.model.set('status', !this.model.get('status'));
+    var id = $(e.target).data('id');
+    if(this.model.get('id')==id){
+      this.model.set('status', !this.model.get('status'));
+    }
   },
 
-  el: '#locations',
+  el: '#likedPlaces',
 
   render: function () {
-    var html = template(this.model.toJSON());
-    this.$el.find('#likedPlaces').html(html);
-
+    var id = this.model.get('id');
+    var className = "liked-"+id;
+    if(this.model.get('status')){
+      $('.'+className).remove();
+    }else{
+      var wrapper = $('<div></div>');
+      $(wrapper).attr("class", className);
+      var html = template(this.model.toJSON());
+      $(wrapper).html(html);
+      this.$el.append(wrapper);
+    }
     return this.$el;
   }
 });
@@ -25953,7 +25952,7 @@ module.exports = Backbone.View.extend({
                 value.status= true;
             })
             that.model.set('locations', data);
-            that.model.trigger('change:locations', data);
+            //that.model.trigger('change:locations', data);
         });
     },
 
@@ -25980,26 +25979,32 @@ module.exports = Backbone.View.extend({
   },
 
   events: {
-    'click .status': 'toggle'
+    'click .status': 'toggleButton'
   },
 
   el: '#results',
 
-  toggle: function (e) {
+  toggleButton: function (e) {
     e.preventDefault();
-    this.model.set('status', !this.model.get('status'));
+    var id = $(e.target).data('id');
+    console.log(e,"###########################");
+    if(this.model.get('id')==id){
+      console.log("####################");
+      this.model.set('status', !this.model.get('status'));
+    }
   },
 
   likeButton: function(id){
-    $("[data-id='"+id+"']").text('Like');
+    $("#results [data-id='"+id+"']").text('Like');
   },
 
   unlikeButton: function(id){
-    $("[data-id='"+id+"']").text('unLike');
+    $("#results [data-id='"+id+"']").text('unLike');
   },
 
   render: function() {
     var id = this.model.get('id');
+    console.log("$$$$$$$$$$$$$$$$$$$$",id);
     var className = "result-"+id;
     if($('.'+className).length){
       if(this.model.get('status')){

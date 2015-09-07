@@ -25,7 +25,6 @@ module.exports = Backbone.View.extend({
                 value.status= true;
             })
             that.model.set('locations', data);
-            that.model.trigger('change:locations', data);
         });
     },
 

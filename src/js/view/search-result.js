@@ -12,26 +12,30 @@ module.exports = Backbone.View.extend({
   },
 
   events: {
-    'click .status': 'toggle'
+    'click .status': 'toggleButton'
   },
 
   el: '#results',
 
-  toggle: function (e) {
+  toggleButton: function (e) {
     e.preventDefault();
-    this.model.set('status', !this.model.get('status'));
+    var id = $(e.target).data('id');
+    if(this.model.get('id')==id){
+      this.model.set('status', !this.model.get('status'));
+    }
   },
 
   likeButton: function(id){
-    $("[data-id='"+id+"']").text('Like');
+    $("#results [data-id='"+id+"']").text('Like');
   },
 
   unlikeButton: function(id){
-    $("[data-id='"+id+"']").text('unLike');
+    $("#results [data-id='"+id+"']").text('unLike');
   },
 
   render: function() {
     var id = this.model.get('id');
+    console.log("$$$$$$$$$$$$$$$$$$$$",id);
     var className = "result-"+id;
     if($('.'+className).length){
       if(this.model.get('status')){

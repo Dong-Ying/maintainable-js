@@ -35,7 +35,6 @@ module.exports = Backbone.View.extend({
 
   render: function() {
     var id = this.model.get('id');
-    console.log("$$$$$$$$$$$$$$$$$$$$",id);
     var className = "result-"+id;
     if($('.'+className).length){
       if(this.model.get('status')){

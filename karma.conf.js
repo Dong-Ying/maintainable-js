@@ -10,28 +10,30 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['browserify','jasmine'],
+    frameworks: ['browserify', 'jasmine'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      {pattern: "spec/javascripts/fixtures/*.html", included: false, served: true},
-      'vendor/jquery/dist/jquery.js',
-      'vendor/jasmine-jquery/lib/jasmine-jquery.js',
-      'vendor/jasmine-ajax/lib/mock-ajax.js',
-      'src/js/**/*.js',
       'spec/**/*-spec.js'
     ],
 
 
     // list of files to exclude
-    exclude: [],
+    exclude: [
+      'src/js/app.js'
+    ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {},
+    preprocessors: {
+      'spec/**/*-spec.js': ['browserify']
+    },
 
+    browserify: {
+      transform: [ 'reactify', 'rewireify' ]
+    },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
@@ -64,5 +66,5 @@ module.exports = function(config) {
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: true
-  });
+  })
 }
